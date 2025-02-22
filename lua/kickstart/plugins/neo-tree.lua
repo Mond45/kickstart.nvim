@@ -19,27 +19,26 @@ return {
       desc = '[E]xplorer NeoTree',
       silent = true,
     },
+    {
+      '<leader>ge',
+      function()
+        require('neo-tree.command').execute { source = 'git_status', toggle = true }
+      end,
+      desc = 'Git [E]xplorer',
+      silent = true,
+    },
   },
-  -- init = function()
-  --   -- FIX: use `autocmd` for lazy-loading neo-tree instead of directly requiring it,
-  --   -- because `cwd` is not set up properly.
-  --   vim.api.nvim_create_autocmd('BufEnter', {
-  --     group = vim.api.nvim_create_augroup('Neotree_start_directory', { clear = true }),
-  --     desc = 'Start Neo-tree with directory',
-  --     once = true,
-  --     callback = function()
-  --       if package.loaded['neo-tree'] then
-  --         return
-  --       else
-  --         local stats = vim.uv.fs_stat(vim.fn.argv(0))
-  --         if stats and stats.type == 'directory' then
-  --           require 'neo-tree'
-  --         end
-  --       end
-  --     end,
-  --   })
-  -- end,
   opts = {
+    filesystem = {
+      filtered_items = {
+        hide_dotfiles = false,
+        hide_by_name = {
+          '.git',
+          '.DS_Store',
+          'thumbs.db',
+        },
+      },
+    },
     window = { position = 'right' },
     default_component_configs = {
       indent = {
@@ -48,12 +47,12 @@ return {
         expander_expanded = '',
         expander_highlight = 'NeoTreeExpander',
       },
-      -- git_status = {
-      --   symbols = {
-      --     unstaged = '󰄱',
-      --     staged = '󰱒',
-      --   },
-      -- },
+      git_status = {
+        symbols = {
+          unstaged = '󰄱',
+          staged = '󰱒',
+        },
+      },
     },
   },
 }

@@ -191,7 +191,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.keymap.set('n', 'c', '"_c', { noremap = true })
 vim.keymap.set('n', 'C', '"_C', { noremap = true })
-vim.keymap.set('x', 'p', '"_dP', { noremap = true })
+vim.keymap.set('x', 'p', '"_dp', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
 
 -- [[ Basic Autocommands ]]

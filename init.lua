@@ -121,6 +121,8 @@ end)
 -- Enable break indent
 vim.opt.breakindent = true
 
+vim.api.nvim_command 'set tabstop=4'
+
 -- Save undo history
 vim.opt.undofile = true
 

@@ -469,6 +469,12 @@ require('lazy').setup({
   },
 
   {
+    'folke/ts-comments.nvim',
+    opts = {},
+    event = 'VeryLazy',
+  },
+
+  {
     'kevinhwang91/nvim-ufo',
     dependencies = {
       { 'kevinhwang91/promise-async' },

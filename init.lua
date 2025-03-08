@@ -196,6 +196,9 @@ vim.keymap.set('n', 'C', '"_C', { noremap = true })
 vim.keymap.set('x', 'p', '"_dp', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
 
+vim.keymap.set('n', '[<space>', "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>", { desc = 'Insert blank line above' })
+vim.keymap.set('n', ']<space>', "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>", { desc = 'Insert blank line below' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 

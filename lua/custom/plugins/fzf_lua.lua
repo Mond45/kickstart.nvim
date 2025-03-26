@@ -4,12 +4,19 @@ return {
     cmd = 'FzfLua',
     dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-treesitter-context' },
     event = { 'VimEnter' },
-    config = function(opts)
-      local config = require 'fzf-lua.config'
-      local actions = require('trouble.sources.fzf').actions
-      config.defaults.actions.files['ctrl-t'] = actions.open
-
-      require('fzf-lua').setup {}
+    opts = function()
+      return {
+        'telescope',
+        actions = {
+          files = {
+            ['ctrl-t'] = require('trouble.sources.fzf').actions.open,
+          },
+        },
+        lsp = {
+          jump1 = false,
+        },
+        fzf_opts = { ['--cycle'] = true },
+      }
     end,
     keys = {
       { '<leader>:', '<cmd>FzfLua command_history<cr>', desc = '[:] Command History' },
@@ -19,6 +26,7 @@ return {
       { '<leader>sd', '<cmd>FzfLua diagnostics_workspace<cr>', desc = '[S]earch [D]iagnostics' },
       { '<leader>sg', '<cmd>FzfLua live_grep<cr>', desc = '[S]earch by [G]rep' },
       { '<leader>sh', '<cmd>FzfLua help_tags<cr>', desc = '[S]earch [H]elp' },
+      { '<leader>sj', '<cmd>FzfLua jumps<cr>', desc = '[S]earch [J]umplist' },
       { '<leader>sk', '<cmd>FzfLua keymaps<cr>', desc = '[S]earch [K]eymaps' },
       {
         '<leader>sn',

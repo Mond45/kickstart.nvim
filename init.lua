@@ -684,7 +684,6 @@ require('lazy').setup({
           return 'make install_jsregexp'
         end)(),
       },
-      'abecodes/tabout.nvim',
     },
     opts = {
       completion = {
@@ -700,6 +699,71 @@ require('lazy').setup({
       },
       keymap = {
         preset = 'super-tab',
+        ['<Tab>'] = {
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.accept()
+            else
+              return cmp.select_and_accept()
+            end
+          end,
+          'snippet_forward',
+          function()
+            local specialChars = {
+              '(',
+              ')',
+              '[',
+              ']',
+              '{',
+              '}',
+              '<',
+              '>',
+              '"',
+              "'",
+              '`',
+              ';',
+            }
+
+            local winid = vim.api.nvim_get_current_win()
+            local line = vim.api.nvim_get_current_line()
+            local curRow, curCol = unpack(vim.api.nvim_win_get_cursor(winid))
+
+            local firstNonSpace = line:find '%S'
+
+            if firstNonSpace == nil or curCol < firstNonSpace then
+              return false
+            end
+
+            local prevChar = line:sub(curCol, curCol)
+            local nextChar = line:sub(curCol + 1, curCol + 1)
+
+            if vim.list_contains(specialChars, nextChar) then
+              vim.schedule(function()
+                vim.api.nvim_win_set_cursor(winid, { curRow, curCol + 1 })
+              end)
+            elseif vim.list_contains(specialChars, prevChar) then
+              local nextSpecial = nil
+              for i = curCol + 1, #line do
+                if vim.list_contains(specialChars, line:sub(i, i)) then
+                  nextSpecial = i
+                  break
+                end
+              end
+              if nextSpecial ~= nil then
+                vim.schedule(function()
+                  vim.api.nvim_win_set_cursor(winid, { curRow, nextSpecial - 1 })
+                end)
+              else
+                return false
+              end
+            else
+              return false
+            end
+
+            return true
+          end,
+          'fallback',
+        },
       },
       signature = { enabled = true },
       sources = {

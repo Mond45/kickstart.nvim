@@ -111,6 +111,9 @@ vim.keymap.set('n', 'c', '"_c', { noremap = true })
 vim.keymap.set('n', 'C', '"_C', { noremap = true })
 vim.keymap.set('x', 'p', 'P', { noremap = true })
 
+vim.keymap.set('n', 'j', 'gj', { noremap = true })
+vim.keymap.set('n', 'k', 'gk', { noremap = true })
+
 vim.keymap.set('n', '[<space>', "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>", { desc = 'Insert blank line above' })
 vim.keymap.set('n', ']<space>', "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>", { desc = 'Insert blank line below' })
 
@@ -257,11 +260,9 @@ require('lazy').setup({
       spec = {
         { '<leader>b', group = '[B]uffer' },
         { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-        { '<leader>d', group = '[D]ocument' },
         { '<leader>g', group = '[G]it' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
-        { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
@@ -390,11 +391,11 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', '<cmd>FzfLua lsp_document_symbols<cr>', '[D]ocument [S]ymbols')
+          map('<leader>ss', '<cmd>FzfLua lsp_document_symbols<cr>', 'Document Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', '<cmd>FzfLua lsp_workspace_symbols<cr>', '[W]orkspace [S]ymbols')
+          map('<leader>sS', '<cmd>FzfLua lsp_live_workspace_symbols<cr>', 'Workspace Symbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -495,8 +496,7 @@ require('lazy').setup({
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
@@ -523,6 +523,11 @@ require('lazy').setup({
             '--fallback-style=llvm',
           },
         },
+        dockerls = {},
+        docker_compose_language_service = {},
+        eslint = {},
+        neocmake = {},
+        tailwindcss = {},
         -- gopls = {},
         basedpyright = {
           settings = {
@@ -689,7 +694,7 @@ require('lazy').setup({
       completion = {
         accept = {
           auto_brackets = {
-            enabled = true,
+            enabled = false,
           },
         },
         documentation = {
@@ -863,22 +868,23 @@ require('lazy').setup({
     opts = {
       ensure_installed = {
         'bash',
+        'bibtex',
         'c',
+        'cmake',
+        'cpp',
         'diff',
+        'hcl',
         'html',
+        'latex',
         'lua',
         'luadoc',
         'markdown',
         'markdown_inline',
         'python',
         'query',
+        'terraform',
         'vim',
         'vimdoc',
-        'cpp',
-        'terraform',
-        'hcl',
-        'bibtex',
-        'latex',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

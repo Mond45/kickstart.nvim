@@ -16,10 +16,16 @@ return {
           jump1 = false,
         },
         fzf_opts = { ['--cycle'] = true },
+        winopts = {
+          preview = {
+            wrap = true,
+          },
+        },
       }
     end,
     keys = {
       { '<leader>:', '<cmd>FzfLua command_history<cr>', desc = '[:] Command History' },
+      { '<leader>/', '<cmd>FzfLua grep_curbuf<cr>', desc = '[/] Grep Current Buffer' },
       { '<leader><leader>', '<cmd>FzfLua files<cr>', desc = '[ ] Search Files' },
       { '<leader>sr', '<cmd>FzfLua oldfiles<cr>', desc = '[S]earch [R]ecent Files' },
       { '<leader>sb', '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>', desc = '[S]earch [B]uffers' },

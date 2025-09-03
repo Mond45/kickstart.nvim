@@ -609,6 +609,7 @@ require('lazy').setup({
         'isort',
         'black',
         'tex-fmt',
+        'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
